@@ -22,9 +22,9 @@ fetch() {
 
         #
         # Generate remote script.
-        script=`mktemp -t ${0%.*}`
+        script=`mktemp -t ${0##*/}`
         trap 'rm -f $script' INT TERM EXIT
-        remote_script=`ssh $srchost mktemp -t ${0%.*}`
+        remote_script=`ssh $srchost mktemp -t ${0##*/}`
 
         cat << EOF > $script
 if ! mkdir $LOCK 2>&1 >/dev/null; then
