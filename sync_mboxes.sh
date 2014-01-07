@@ -5,9 +5,30 @@ LOCK="\$HOME/.${0##*/}.lock"
 
 set -e
 
+usage() {
+        cat >&2 << EOF
+Usage:
+- Fetch + merge:
+    Usage:   ${0##*/} sync srchost::srcdir dstdir
+    Example: ${0##*/} sync remote.host.net::Mail Mail
+    Output:  Whether it appends or creates a mailbox locally.
+
+- Fetch only:
+    Usage:   ${0##*/} fetch srchost::srcdir dstdir
+    Example: ${0##*/} fetch remote.host.net::Mail Mail
+    Output:  Name of the temporary directory in \`dstdir'.
+
+- Merge only:
+    Usage:   ${0##*/} merge dstdir/tempdir dstdir
+    Example: ${0##*/} merge Mail/sync_mboxes.sh.20140107_13702 Mail
+    Output:  Whether it appends or creates a mailbox locally.
+EOF
+        exit $1
+}
+
 lock() {
         if ! eval mkdir $LOCK 2>&1 > /dev/null; then
-                echo "Local lock dir exists; aborting." >&2
+                echo "ERROR: Local lock dir exists; aborting." >&2
                 exit 1
         fi
 }
@@ -28,7 +49,7 @@ fetch() {
 
         cat << EOF > $script
 if ! mkdir $LOCK 2>&1 >/dev/null; then
-        echo "Remote lock dir exists; aborting." >&2
+        echo "ERROR: Remote lock dir exists; aborting." >&2
         exit 1
 fi
 cd $srcdir
@@ -108,7 +129,7 @@ merge() {
 }
 
 command=$1
-shift
+shift || true
 src=$1
 srchost=${1%%::*}
 srcdir=${1##*::}
@@ -139,9 +160,11 @@ sync)
         unlock
         exit 0
         ;;
-'')     ;;
+'')
+        usage 0
+        ;;
 *)
-        echo "Unknown command" >&2
-        exit 1
+        echo "ERROR: Unknown command" >&2
+        usage 1
         ;;
 esac
