@@ -59,7 +59,7 @@ for f in *; do
         *.sync) continue ;;
         *.gz|*.bz2|*.xz|*.lzma)
                 echo "Compressed mailboxes are not supported," \\
-            "skipping \$f." >&2
+                   "skipping \$f." >&2
                 continue
                 ;;
         esac
@@ -80,9 +80,6 @@ rm \$list
 rmdir $LOCK
 rm $remote_script
 EOF
-        #cat $script
-        #eval rmdir $LOCK
-        #exit
 
         scp -q $script $srchost:$remote_script
 
