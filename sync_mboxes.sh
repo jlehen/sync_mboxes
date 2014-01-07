@@ -103,8 +103,8 @@ merge() {
                 cat $mb >> ../$mb
                 rm $mb
         done
-        rm -rf $tempdir
         cd $pwd
+        rmdir $tempdir
 }
 
 command=$1
