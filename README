@@ -1,0 +1,22 @@
+sync_mboxes.sh is used to fetch and rotate mailboxes from a remote directory
+and merge them locally.
+
+In order to avoid losing data, the mailboxes are renamed and then replaced by
+an empty file in a way to avoid data loss.  Once a mailbox has been fetched
+successfully, it is remove remotely.
+
+Usage:
+- Fetch + merge:
+    Usage:   sync_mboxes.sh sync srchost::srcdir dstdir
+    Example: sync_mboxes.sh sync remote.host.net::Mail Mail
+    Output:  Whether it appends or creates a mailbox locally.
+
+- Fetch only:
+    Usage:   sync_mboxes.sh fetch srchost::srcdir dstdir
+    Example: sync_mboxes.sh fetch remote.host.net::Mail Mail
+    Output:  Name of the temporary directory in `dstdir'.
+
+- Merge only:
+    Usage:   sync_mboxes.sh merge dstdir/tempdir dstdir
+    Example: sync_mboxes.sh merge Mail/sync_mboxes.sh.20140107_13702 Mail
+    Output:  Whether it appends or creates a mailbox locally.
