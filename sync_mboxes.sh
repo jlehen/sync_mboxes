@@ -72,6 +72,7 @@ for f in *; do
         touch empty
         ln \$f \$f.sync >&2
         mv empty \$f >&2
+        list="\$list \$f.sync"
         # Remove empty mailboxes.
 done
 
