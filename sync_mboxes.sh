@@ -68,11 +68,11 @@ for f in *; do
                 list="\$list \$f.sync"
                 continue
         fi
+        [ -s \$f ] || continue
         touch empty
         ln \$f \$f.sync >&2
         mv empty \$f >&2
         # Remove empty mailboxes.
-        [ -s \$f.sync ] && list="\$list \$f.sync" || rm \$f.sync >&2
 done
 
 tar cf - \$list | gzip
